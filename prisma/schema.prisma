@@ -1,0 +1,72 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Customer {
+  id             String         @id
+  salesOrders    SalesOrder[]
+  invoices       Invoice[]
+  journalEntries JournalEntry[]
+}
+
+model SalesOrder {
+  id         String @id
+  customerId String
+
+  customer   Customer         @relation(fields: [customerId], references: [id])
+  items      SalesOrderItem[]
+  deliveries DeliveryItem[]   @relation("OrderToDelivery")
+}
+
+model SalesOrderItem {
+  id           String @id
+  salesOrderId String
+  material     String
+
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id])
+}
+
+model Delivery {
+  id    String         @id
+  items DeliveryItem[]
+}
+
+model DeliveryItem {
+  id                  String  @id
+  deliveryId          String
+  salesOrderReference String?
+
+  delivery Delivery @relation(fields: [deliveryId], references: [id])
+
+  salesOrder SalesOrder? @relation("OrderToDelivery", fields: [salesOrderReference], references: [id])
+}
+
+model Invoice {
+  id                 String  @id
+  customerId         String?
+  accountingDocument String?
+
+  customer Customer?     @relation(fields: [customerId], references: [id])
+  items    InvoiceItem[]
+}
+
+model InvoiceItem {
+  id                String  @id
+  billingDocumentId String
+  deliveryReference String?
+
+  invoice Invoice @relation(fields: [billingDocumentId], references: [id])
+}
+
+model JournalEntry {
+  id               String  @id
+  invoiceReference String?
+  customerId       String?
+
+  customer Customer? @relation(fields: [customerId], references: [id])
+}
