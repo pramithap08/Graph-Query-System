@@ -1,0 +1,25 @@
+{
+  "name": "dodge-ai-backend",
+  "version": "1.0.0",
+  "description": "Graph-based business query system backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "prisma": "prisma",
+    "migrate": "prisma migrate deploy",
+    "generate": "prisma generate",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "groq-sdk": "^0.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prisma": "^6.0.1"
+  }
+}
